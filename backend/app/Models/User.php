@@ -45,4 +45,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function full_customer_name($name  , $email ){
+
+        return "Helloo My name is " . $name . " and my email is " . $email;
+
+    }
 }
