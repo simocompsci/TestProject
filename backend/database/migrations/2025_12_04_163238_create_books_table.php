@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('author_name');
+            $table->bigInteger('pages');
+            $table->string('cover_path'); 
+            $table->text('review');
+            $table->enum('status', ['unread', 'reading', 'read', 'abandoned'])->default('unread');
+            $table->date('started_date');
+            $table->date('finished_date');
+            $table->bigInteger('current_page');
+            $table->decimal('rating', 2, 1)->nullable();
+            $table->string('genre')->nullable();
+            
             $table->timestamps();
         });
     }
