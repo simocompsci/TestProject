@@ -46,10 +46,20 @@ class User extends Authenticatable
         ];
     }
 
+    public function books()
+    {
+        return $this->hasMany(Book::class);
+    }
 
-    public function full_customer_name($name  , $email ){
+    public function readingSessions()
+    {
+        return $this->hasMany(ReadingSession::class);
+    }
+
+
+    public function full_customer_name($name, $email)
+    {
 
         return "Helloo My name is " . $name . " and my email is " . $email;
-
     }
 }

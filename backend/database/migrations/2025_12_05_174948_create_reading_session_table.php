@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reading_session', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('book_id');
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('start_page');
             $table->unsignedInteger('end_page');
             $table->unsignedInteger('pages_read')->virtualAs('end_page - start_page');

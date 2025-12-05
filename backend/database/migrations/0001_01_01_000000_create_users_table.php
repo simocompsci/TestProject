@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->bigInteger('daily_reading_goal');
+            $table->bigInteger('mounthly_reading_goal');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
