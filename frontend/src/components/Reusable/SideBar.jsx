@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Sidebar() {
   return (
     <div className="h-full fixed z-1 w-52 bg-white text-black flex flex-col justify-between border-r-2 border-black">
-      
+
       {/* Top section - Logo */}
       <div className="flex flex-col items-center mt-6">
         <div className="text-4xl font-bold mb-10">LOGO</div>
@@ -12,7 +12,7 @@ export default function Sidebar() {
         {/* Navigation items */}
         <nav className="flex flex-col gap-4 w-full">
           <Link to="/" className="flex items-center px-4 py-2 hover:bg-gray-200">
-            <Home className="mr-3 font-semibold" size={35}/>
+            <Home className="mr-3 font-semibold" size={35} />
             <span className="text-2xl font-semibold">Home</span>
           </Link>
 
@@ -21,7 +21,7 @@ export default function Sidebar() {
             <span className="text-2xl font-semibold">Library</span>
           </Link>
 
-          <Link to="/whishlist" className="flex items-center px-4 py-2 hover:bg-gray-200">
+          <Link to="/wishlist" className="flex items-center px-4 py-2 hover:bg-gray-200">
             <Heart className="mr-3" size={35} />
             <span className="text-2xl font-semibold">Wishlist</span>
           </Link>

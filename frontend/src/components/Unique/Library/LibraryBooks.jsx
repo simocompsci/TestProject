@@ -3,93 +3,29 @@ import Modal from "../../Reusable/Modals/Modal";
 import DeleteModal from "../../Reusable/Modals/DeleteModal";
 import EditModal from "../../Reusable/Modals/EditModal";
 import InfoModal from "../../Reusable/Modals/InfoModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getOwnedBooks } from "../../../APIs/MyServerAPIs";
 
-const MyBooks = [
-  {
-    id: 1,
-    title: "Blood Meridian",
-    author: "Cormac McCarthy",
-    cover:
-      "https://i.pinimg.com/736x/6c/f7/46/6cf74663b7dc8f86262887a49167b513.jpg",
-    rating: 5,
-  },
-  {
-    id: 2,
-    title: "Red Rising",
-    author: "Pierce Brown",
-    cover:
-      "https://i.pinimg.com/736x/bc/d8/56/bcd8563e25b0d2098e619411086d9d71.jpg",
-    rating: 5,
-  },
-  {
-    id: 3,
-    title: "Demons",
-    author: "Fyodor Dostoevsky",
-    cover:
-      "https://i.pinimg.com/736x/80/9f/15/809f15749decba843faa3ed9de488100.jpg",
-    rating: 5,
-  },
-  {
-    id: 4,
-    title: "Les Misérables",
-    author: "Victor Hugo",
-    cover:
-      "https://i.pinimg.com/736x/45/76/5b/45765b91a909c38e2ab840e30a04e651.jpg",
-    rating: 4,
-  },
-  {
-    id: 5,
-    title: "Berserk",
-    author: "Kentaro Miura.",
-    cover:
-      "https://i.pinimg.com/1200x/e4/bc/d2/e4bcd250b293f2c9af355130f7fd144d.jpg",
-    rating: 4,
-  },
-  {
-    id: 6,
-    title: "My Year Abroad",
-    author: "Chang-Rae Lee",
-    cover:
-      "https://i.pinimg.com/1200x/0f/ad/54/0fad546889806d682a93e89dc09f028d.jpg",
-    rating: 4,
-  },
-  {
-    id: 7,
-    title: "Quidditch Through the Ages",
-    author: "J.K. Rowling",
-    cover:
-      "https://i.pinimg.com/736x/65/8a/3a/658a3aa2772aaa7a42a970fbc317a62c.jpg",
-    rating: 5,
-  },
-  {
-    id: 8,
-    title: "The Great Gatsby",
-    author: "F. Scott Fitzgerald",
-    cover:
-      "https://i.pinimg.com/736x/06/74/19/067419c66052c8c21f988efc88a63dc8.jpg",
-    rating: 5,
-  },
-  {
-    id: 9,
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
-    cover:
-      "https://i.pinimg.com/736x/36/90/ee/3690eea4c1aa0ae57265f07285eb92c3.jpg",
-    rating: 5,
-  },
-  {
-    id: 10,
-    title: "To Kill a Mockingbird",
-    author: "Harper Lee",
-    cover:
-      "https://i.pinimg.com/736x/25/b1/1c/25b11c390395cd52dc0a65e19a42fe75.jpg",
-    rating: 5,
-  },
-];
-
-function BookCard({ book, onEdit, onDelete, onInfo }) {
+function BookCard({ book, onRefresh }) {
   const [openModal, setOpenModal] = useState(null);
+
+  const handleClose = () => {
+    setOpenModal(null);
+  };
+
+  const handleDeleted = () => {
+    handleClose();
+    if (onRefresh) {
+      onRefresh();
+    }
+  };
+
+  const handleUpdated = () => {
+    handleClose();
+    if (onRefresh) {
+      onRefresh();
+    }
+  };
 
   return (
     <>
@@ -133,10 +69,22 @@ function BookCard({ book, onEdit, onDelete, onInfo }) {
 
       {/* MODALS */}
       {openModal && (
-        <Modal onClose={() => setOpenModal(null)}>
+        <Modal onClose={handleClose}>
           {openModal === "info" && <InfoModal book={book} />}
-          {openModal === "edit" && <EditModal book={book} />}
-          {openModal === "delete" && <DeleteModal book={book} />}
+          {openModal === "edit" && (
+            <EditModal
+              book={book}
+              onClose={handleClose}
+              onUpdated={handleUpdated}
+            />
+          )}
+          {openModal === "delete" && (
+            <DeleteModal
+              book={book}
+              onClose={handleClose}
+              onDeleted={handleDeleted}
+            />
+          )}
         </Modal>
       )}
     </>
@@ -144,20 +92,94 @@ function BookCard({ book, onEdit, onDelete, onInfo }) {
 }
 
 function LibraryBooks() {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchLibraryBooks = async () => {
+    try {
+      setLoading(true);
+      const ownedBooks = await getOwnedBooks();
+
+      // Map backend data to frontend format
+      const formattedBooks = ownedBooks.map(book => ({
+        id: book.id,
+        title: book.title,
+        author: book.author_name,
+        cover: book.cover_path,
+        rating: book.rating,
+        status: book.status,
+        pages: book.pages,
+        currentPage: book.current_page,
+        review: book.review,
+        genre: book.genre,
+        started_date: book.started_date,
+        finished_date: book.finished_date,
+      }));
+
+      setBooks(formattedBooks);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching library books:', err);
+      setError('Failed to load library books. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLibraryBooks();
+  }, []);
+
+  const handleRefresh = () => {
+    fetchLibraryBooks();
+  };
+
+  if (loading) {
+    return (
+      <section className="ml-60 mt-10 p-8">
+        <div className="flex items-center justify-center mt-20">
+          <div className="text-2xl font-bold">Loading your library...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="ml-60 mt-10 p-8">
+        <div className="flex items-center justify-center mt-20">
+          <div className="text-xl text-red-600 border-2 border-red-600 bg-red-100 p-6">
+            {error}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="ml-60 mt-10 p-8">
       <div className="flex items-center justify-between mb-4 mt-20">
         <h1 className="text-6xl font-bold">My Library</h1>
+        <div className="text-xl font-semibold">
+          {books.length} {books.length === 1 ? 'book' : 'books'}
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 ">
-        {MyBooks.map((b) => (
-          <div key={b.id}>
-            {" "}
-            <BookCard book={b} />
-          </div>
-        ))}
-      </div>
+      {books.length === 0 ? (
+        <div className="text-center mt-10 p-8 border-2 border-black bg-amber-100">
+          <p className="text-xl font-semibold">Your library is empty!</p>
+          <p className="mt-2">Search for books and add them to your library.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          {books.map((b) => (
+            <div key={b.id}>
+              <BookCard book={b} onRefresh={handleRefresh} />
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

@@ -1,6 +1,49 @@
 import { X } from "lucide-react";
+import { useState } from "react";
+import { addBook } from "../../../APIs/MyServerAPIs";
 
 function BookModal({ book, onClose }) {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
+
+  const handleAddToLibrary = async () => {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      await addBook(book, 'own');
+      setMessage({ type: 'success', text: 'Book added to library!' });
+
+      // Close modal after 1.5 seconds
+      setTimeout(() => {
+        onClose();
+      }, 1500);
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to add book. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddToWishlist = async () => {
+    setLoading(true);
+    setMessage(null);
+
+    try {
+      await addBook(book, 'wishlisted');
+      setMessage({ type: 'success', text: 'Book added to wishlist!' });
+
+      // Close modal after 1.5 seconds
+      setTimeout(() => {
+        onClose();
+      }, 1500);
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Failed to add book. Please try again.' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="relative w-full max-w-3xl border-2 border-black bg-amber-50 p-6">
@@ -41,26 +84,32 @@ function BookModal({ book, onClose }) {
               </p>
             </div>
 
+            {/* Success/Error Message */}
+            {message && (
+              <div
+                className={`mt-4 p-3 border-2 border-black ${message.type === 'success' ? 'bg-green-200' : 'bg-red-200'
+                  }`}
+              >
+                <p className="text-sm font-semibold">{message.text}</p>
+              </div>
+            )}
+
             {/* Actions */}
             <div className="mt-6 flex gap-4">
               <button
-                className="flex-1 border-2 border-black bg-amber-200 py-3 font-semibold hover:bg-amber-300 transition"
-                onClick={() => {
-                  console.log("Added to library:", book.title);
-                  onClose();
-                }}
+                className="flex-1 border-2 border-black bg-amber-200 py-3 font-semibold hover:bg-amber-300 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleAddToLibrary}
+                disabled={loading}
               >
-                Add to Library
+                {loading ? 'Adding...' : 'Add to Library'}
               </button>
 
               <button
-                className="flex-1 border-2 border-black bg-amber-100 py-3 font-semibold hover:bg-amber-200 transition"
-                onClick={() => {
-                  console.log("Added to wishlist:", book.title);
-                  onClose();
-                }}
+                className="flex-1 border-2 border-black bg-amber-100 py-3 font-semibold hover:bg-amber-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleAddToWishlist}
+                disabled={loading}
               >
-                Add to Wishlist
+                {loading ? 'Adding...' : 'Add to Wishlist'}
               </button>
             </div>
           </div>
@@ -71,3 +120,4 @@ function BookModal({ book, onClose }) {
 }
 
 export default BookModal;
+

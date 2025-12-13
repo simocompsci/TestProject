@@ -10,7 +10,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/library" element={<LibraryPage />} />
-        <Route path="/whishlist" element={<WishListPage />} />
+        <Route path="/wishlist" element={<WishListPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
     </BrowserRouter>
