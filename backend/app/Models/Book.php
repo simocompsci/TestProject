@@ -18,6 +18,7 @@ class Book extends Model
         'current_page',
         'rating',
         'genre',
+        'owning_status',
     ];
 
     public function user() {

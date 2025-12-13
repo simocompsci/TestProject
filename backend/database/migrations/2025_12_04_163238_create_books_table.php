@@ -17,14 +17,14 @@ return new class extends Migration
             $table->string('author_name');
             $table->bigInteger('pages');
             $table->string('cover_path'); 
-            $table->text('review');
+            $table->text('review')->nullable();
             $table->enum('status', ['unread', 'reading', 'read', 'abandoned'])->default('unread');
-            $table->date('started_date');
-            $table->date('finished_date');
-            $table->bigInteger('current_page');
+            $table->date('started_date')->nullable();
+            $table->date('finished_date')->nullable();
+            $table->bigInteger('current_page')->nullable();
             $table->decimal('rating', 2, 1)->nullable();
             $table->string('genre')->nullable();
-            
+            $table->enum('owning_status', ['own', 'wishlisted'])->default('own');
             $table->timestamps();
         });
     }
