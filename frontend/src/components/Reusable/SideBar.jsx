@@ -1,4 +1,5 @@
 import { Home, Book, Heart, Settings, LogOut } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Sidebar() {
   return (
@@ -10,29 +11,29 @@ export default function Sidebar() {
 
         {/* Navigation items */}
         <nav className="flex flex-col gap-4 w-full">
-          <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
+          <Link to="/" className="flex items-center px-4 py-2 hover:bg-gray-200">
             <Home className="mr-3 font-semibold" size={35}/>
             <span className="text-2xl font-semibold">Home</span>
-          </a>
+          </Link>
 
-          <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
+          <Link to="/library" className="flex items-center px-4 py-2 hover:bg-gray-200">
             <Book className="mr-3" size={35} />
             <span className="text-2xl font-semibold">Library</span>
-          </a>
+          </Link>
 
-          <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
+          <Link to="/whishlist" className="flex items-center px-4 py-2 hover:bg-gray-200">
             <Heart className="mr-3" size={35} />
             <span className="text-2xl font-semibold">Wishlist</span>
-          </a>
+          </Link>
         </nav>
       </div>
 
       {/* Bottom section - Settings & Logout */}
       <div className="flex flex-col gap-4 mb-6">
-        <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
+        <Link to="/settings" className="flex items-center px-4 py-2 hover:bg-gray-200">
           <Settings className="mr-3" size={35} />
           <span className="text-2xl font-semibold">Settings</span>
-        </a>
+        </Link>
 
         <a href="#" className="flex items-center px-4 py-2 hover:bg-gray-200">
           <LogOut className="mr-3" size={35} />

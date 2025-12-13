@@ -1,68 +1,85 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
+import BookModal from "./Modals/BookModal";
+import { searchBooksByTitle } from "../../APIs/GoogleBooksAPI";
 
 export default function Header() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Dummy search function
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     const value = e.target.value;
     setQuery(value);
 
-    // Example: filter some dummy books (replace with API call)
-    const dummyBooks = [
-      "Berserk",
-      "Naruto",
-      "One Piece",
-      "Attack on Titan",
-      "Fullmetal Alchemist",
-    ];
-    setResults(
-      value
-        ? dummyBooks.filter((book) =>
-            book.toLowerCase().includes(value.toLowerCase())
-          )
-        : []
-    );
+    if (!value.trim()) {
+      setResults([]);
+      return;
+    }
+
+    setLoading(true);
+    const books = await searchBooksByTitle(value);
+    setResults(books);
+    setLoading(false);
   };
 
   return (
-    <header className="h-30 bg-amber-200 border-b-2 border-black flex items-center fixed w-full">
-      <div className="flex-1 flex justify-center">
-        {/* Search bar */}
-        <div className="relative w-full max-w-3xl">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
-            size={25}
-          />
-          <input
-            type="text"
-            placeholder="Search For Your Desired Books..."
-            value={query}
-            onChange={handleSearch}
-            className="w-full text-2xl border-2 h-15 border-black bg-gray-100 pl-10 pr-4 py-2 focus:outline-none"
-          />
+    <>
+      <header className="h-30 bg-amber-200 border-b-2 border-black flex items-center fixed w-full">
+        <div className="flex-1 flex justify-center">
+          <div className="relative w-full max-w-3xl">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+              size={25}
+            />
 
-          {/* Search results dropdown */}
-          {results.length > 0 && (
-            <ul className="absolute top-full mt-1 w-full bg-white border-2 border-black shadow-lg max-h-70 overflow-y-auto z-50">
-              {results.map((book, index) => (
-                <li
-                  key={index}
-                  className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                  onClick={() => {
-                    setQuery(book);
-                    setResults([]);
-                  }}
-                >
-                  {book}
-                </li>
-              ))}
-            </ul>
-          )}
+            <input
+              type="text"
+              placeholder="Search For Your Desired Books..."
+              value={query}
+              onChange={handleSearch}
+              className="w-full text-2xl border-2 h-15 border-black bg-gray-100 pl-10 pr-4 py-2 focus:outline-none"
+            />
+
+            {/* Search results */}
+            {results.length > 0 && (
+              <ul className="absolute top-full mt-1 w-full bg-white border-2 border-black shadow-lg max-h-70 overflow-y-auto z-50">
+                {results.map((book) => (
+                  <li
+                    key={book.id}
+                    className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
+                    onClick={() => {
+                      setSelectedBook(book);
+                      setQuery(book.title);
+                      setResults([]);
+                    }}
+                  >
+                    <div className="font-semibold">{book.title}</div>
+                    <div className="text-sm text-gray-600">
+                      {book.author}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {loading && (
+              <div className="absolute top-full mt-1 bg-white border px-4 py-2">
+                Searching…
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      {/* Book Modal */}
+      {selectedBook && (
+        <BookModal
+          book={selectedBook}
+          onClose={() => setSelectedBook(null)}
+        />
+      )}
+    </>
   );
 }

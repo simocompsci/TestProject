@@ -5,7 +5,7 @@ const popularBooks = [
     id: 1,
     title: "Blood Meridian",
     author: "Cormac McCarthy",
-    cover: "https://i.pinimg.com/736x/82/25/f9/8225f96c931fbddb88b7e91b1bb605a6.jpg",
+    cover: "https://i.pinimg.com/736x/6c/f7/46/6cf74663b7dc8f86262887a49167b513.jpg",
     rating: 5,
   },
   {
@@ -99,7 +99,7 @@ function Stars({ value = 0, max = 5 }) {
         <Star
           key={i}
           size={12}
-          className={i < value ? "text-yellow-500" : "text-gray-300"}
+          className={i < value ? "fill-black" : "text-black"}
         />
       ))}
     </div>
