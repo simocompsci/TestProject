@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <>
       <header className="h-30 bg-amber-200 border-b-2 border-black flex items-center fixed w-full">
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-start ml-70">
           <div className="relative w-full max-w-3xl">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
@@ -69,6 +69,17 @@ export default function Header() {
                 Searching…
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Profile Section */}
+        <div className="flex items-center gap-3 mr-15">
+          <div className="text-right">
+            <p className="font-semibold text-xl">John Doe</p>
+            <p className="text-xl text-gray-600">Book Lover</p>
+          </div>
+          <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center font-bold text-2xl cursor-pointer hover:scale-105 transition">
+            JD
           </div>
         </div>
       </header>
