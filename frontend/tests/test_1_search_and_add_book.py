@@ -30,13 +30,13 @@ def test_search_and_add_book_to_library():
         print("✓ Search bar found")
         
         # Type in search query
-        search_query = "Harry Potter"
+        search_query = "War and Peace"
         search_input.clear()
         search_input.send_keys(search_query)
         print(f"✓ Typed '{search_query}' in search bar")
         
         # Wait for search results to appear
-        time.sleep(2)  # Wait for API response
+        time.sleep(5)  # Wait for API response
         first_result = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "ul li"))
         )
@@ -59,8 +59,8 @@ def test_search_and_add_book_to_library():
         add_to_library_btn.click()
         print("✓ Clicked 'Add to Library' button")
         
-        # Wait for modal to auto-close (takes 1.5 seconds after success message)
-        time.sleep(5)  # Increased wait time for modal to close
+        # Wait for modal to auto-close (wait for the modal to disappear from DOM)
+        wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, ".fixed.inset-0.z-50")))
         print("✓ Book added and modal closed")
         
         # Navigate to Library page
@@ -146,8 +146,8 @@ def test_search_and_add_book_to_wishlist():
         add_to_wishlist_btn.click()
         print("✓ Clicked 'Add to Wishlist' button")
         
-        # Wait for modal to auto-close (takes 1.5 seconds after success message)
-        time.sleep(3)  # Increased wait time for modal to close
+        # Wait for modal to auto-close (wait for the modal to disappear from DOM)
+        wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, ".fixed.inset-0.z-50")))
         print("✓ Book added and modal closed")
         
         # Navigate to Wishlist page
