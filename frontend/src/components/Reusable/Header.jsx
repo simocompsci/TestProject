@@ -78,7 +78,7 @@ export default function Header() {
             <p className="font-semibold text-xl">John Doe</p>
             <p className="text-xl text-gray-600">Book Lover</p>
           </div>
-          <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center font-bold text-2xl cursor-pointer hover:scale-105 transition">
+          <div className="w-16 h-16 border-2 border-black bg-white text-black flex items-center justify-center font-bold text-2xl cursor-pointer hover:scale-105 transition">
             JD
           </div>
         </div>
