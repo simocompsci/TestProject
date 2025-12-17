@@ -1,6 +1,4 @@
-"""
-Selenium E2E Test 2: Edit a library book's current page and reading status
-"""
+
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -11,10 +9,7 @@ import time
 
 
 def test_edit_library_book_current_page_and_status():
-    """
-    Test: Go to library, select a book, edit current page to 100 and status to "reading"
-    """
-    # Setup
+
     driver = webdriver.Chrome()
     wait = WebDriverWait(driver, 10)
     
@@ -107,10 +102,10 @@ def test_edit_library_book_current_page_and_status():
         assert "100" in current_page_text.text, f"Current page not updated! Found: {current_page_text.text}"
         print("✓ Verified current page is 100")
         
-        print("\n✅ TEST PASSED: Book successfully edited with current page 100 and status 'reading'")
+        print("\n TEST PASSED: Book successfully edited with current page 100 and status 'reading'")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {str(e)}")
+        print(f"\n TEST FAILED: {str(e)}")
         # Take screenshot on failure
         driver.save_screenshot("/tmp/test_2_failure.png")
         raise

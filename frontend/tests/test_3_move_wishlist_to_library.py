@@ -1,6 +1,4 @@
-"""
-Selenium E2E Test 3: Move a book from wishlist to library and verify
-"""
+
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -10,10 +8,7 @@ import time
 
 
 def test_move_book_from_wishlist_to_library():
-    """
-    Test: Go to wishlist, select a book, click "Add to Library", verify it appears in library
-    """
-    # Setup
+    
     driver = webdriver.Chrome()
     wait = WebDriverWait(driver, 10)
     
@@ -36,7 +31,7 @@ def test_move_book_from_wishlist_to_library():
         book_cards = driver.find_elements(By.CSS_SELECTOR, ".grid > div")
         
         if len(book_cards) == 0:
-            print("⚠ No books in wishlist! Please add a book to wishlist first.")
+            print(" No books in wishlist! Please add a book to wishlist first.")
             print("Skipping test...")
             return
         
@@ -91,10 +86,10 @@ def test_move_book_from_wishlist_to_library():
         assert book_found, "The book from wishlist was not found in library!"
         print("✓ Verified the book from wishlist is now in library")
         
-        print("\n✅ TEST PASSED: Book successfully moved from wishlist to library and verified")
+        print("\n TEST PASSED: Book successfully moved from wishlist to library and verified")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {str(e)}")
+        print(f"\n TEST FAILED: {str(e)}")
         # Take screenshot on failure
         driver.save_screenshot("/tmp/test_3_failure.png")
         raise

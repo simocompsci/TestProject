@@ -1,6 +1,4 @@
-"""
-Selenium E2E Test 1: Search for a book and add it to library/wishlist, then verify
-"""
+
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -11,10 +9,6 @@ import time
 
 
 def test_search_and_add_book_to_library():
-    """
-    Test: Search for 'Harry Potter', add to library, verify it appears in library
-    """
-    # Setup
     driver = webdriver.Chrome()
     wait = WebDriverWait(driver, 10)
     
@@ -36,7 +30,7 @@ def test_search_and_add_book_to_library():
         print(f"✓ Typed '{search_query}' in search bar")
         
         # Wait for search results to appear
-        time.sleep(5)  # Wait for API response
+        time.sleep(3)  # Wait for API response
         first_result = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "ul li"))
         )
@@ -98,9 +92,6 @@ def test_search_and_add_book_to_library():
 
 
 def test_search_and_add_book_to_wishlist():
-    """
-    Test: Search for 'The Great Gatsby', add to wishlist, verify it appears in wishlist
-    """
     # Setup
     driver = webdriver.Chrome()
     wait = WebDriverWait(driver, 10)
@@ -123,7 +114,7 @@ def test_search_and_add_book_to_wishlist():
         print(f"✓ Typed '{search_query}' in search bar")
         
         # Wait for search results to appear
-        time.sleep(2)  # Wait for API response
+        time.sleep(3)  # Wait for API response
         first_result = wait.until(
             EC.element_to_be_clickable((By.CSS_SELECTOR, "ul li"))
         )
@@ -171,10 +162,10 @@ def test_search_and_add_book_to_wishlist():
         assert len(book_images) > 0, "No book covers found!"
         print(f"✓ Verified book exists in wishlist with cover image")
         
-        print("\n✅ TEST PASSED: Book successfully added to wishlist and verified")
+        print("\n TEST PASSED: Book successfully added to wishlist and verified")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {str(e)}")
+        print(f"\n TEST FAILED: {str(e)}")
         driver.save_screenshot("/tmp/test_1_wishlist_failure.png")
         raise
         

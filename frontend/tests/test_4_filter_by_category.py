@@ -1,6 +1,4 @@
-"""
-Selenium E2E Test 4: Filter by Category
-"""
+
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,11 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 def test_filter_by_category():
-    """
-    Test: Verify that clicking a category filter updates the displayed books.
-    Note: This test is EXPECTED TO FAIL currently as the functionality is not implemented.
-    """
-    # Setup
+    
     driver = webdriver.Chrome()
     wait = WebDriverWait(driver, 10)
     
@@ -59,10 +53,10 @@ def test_filter_by_category():
         # Since logic isn't implemented, this assertion will fail
         assert initial_books != updated_books, "Books did not change after selecting 'Novels' category! (Feature not implemented)"
         
-        print("\n✅ TEST PASSED: Category filter updated the book list")
+        print("\n TEST PASSED: Category filter updated the book list")
         
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {str(e)}")
+        print(f"\n TEST FAILED: {str(e)}")
         # Take screenshot on failure
         driver.save_screenshot("/tmp/test_4_failure.png")
         raise
