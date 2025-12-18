@@ -9,4 +9,8 @@ use Illuminate\Support\Facades\Validator;
 class BookController extends Controller
 {
     // i will redo this part of the code on my own
+    public function getAllBooks(Request $request){
+        $books = Book::all();
+        return response()->json($books);
+    }
 }
