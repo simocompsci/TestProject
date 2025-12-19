@@ -42,4 +42,39 @@ class BookController extends Controller
             "data" => $book,
         ], Response::HTTP_CREATED);
     }
+
+    public function getBookById($id){
+        $book = Book::findOrFail($id);
+        return response()->json($book , Response::HTTP_FOUND);
+    }
+
+    public function editBook(Request $request , $id){
+        $validated = $request->validate(
+            [
+                'title' => 'required|string',
+                'author_name' => 'required|string|max:100',
+                'pages' => 'required|integer',
+                'cover_path' => 'string|nullable',
+                'review' => 'string|nullable',
+                'status' => 'required|string',
+                'started_date' => 'date|nullable',
+                'finished_date' => 'date|nullable',
+                'current_page' => 'integer|nullable',
+                'rating' => 'float|nullable',
+                'genre' => 'string|nullable',
+                'owning_status' => 'string|nullable',
+            ]
+        );
+
+        $book = Book::findOrFail($id);
+        $book->update($validated);
+        return response()->json($book);
+        
+    }
+
+    public function deleteBook($id){
+        $book = Book::findOrFail($id);
+        $book->delete();
+        return response()->json("Book deleted successfully" , 204);
+    }
 }
