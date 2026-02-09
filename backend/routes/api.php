@@ -1,14 +1,17 @@
 <?php
 
-use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BookController;
 
-
-
-Route::get("/books" , [BookController::class , 'getAllBooks']);
-Route::get("/books/{id}" , [BookController::class , 'getBookById']);
-Route::post("/books" , [BookController::class , 'addBook']);
-Route::put("/books/{id}" , [BookController::class , 'updateBook']);
-Route::delete("/books/{id}" , [BookController::class , 'addBook']);
-
+Route::prefix('books')->group(function () {
+    Route::get('/', [BookController::class, 'index']);
+    Route::post('/', [BookController::class, 'store']);
+    Route::get('/{id}', [BookController::class, 'show']);
+    Route::put('/{id}', [BookController::class, 'update']);
+    Route::delete('/{id}', [BookController::class, 'destroy']);
+    
+    // Custom routes for owned and wishlisted books
+    Route::get('/owned/all', [BookController::class, 'getOwnedBooks']);
+    Route::get('/wishlisted/all', [BookController::class, 'getWishlistedBooks']);
+});
